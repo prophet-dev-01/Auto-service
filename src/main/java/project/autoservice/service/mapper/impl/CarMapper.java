@@ -1,5 +1,6 @@
 package project.autoservice.service.mapper.impl;
 
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 import project.autoservice.model.Car;
 import project.autoservice.model.Owner;
@@ -8,8 +9,6 @@ import project.autoservice.model.dto.response.CarResponseDto;
 import project.autoservice.service.OwnerService;
 import project.autoservice.service.mapper.ModelMapper;
 
-import java.util.Optional;
-
 @Component
 public class CarMapper implements ModelMapper<Car, CarResponseDto, CarRequestDto> {
     private final OwnerService ownerService;
@@ -17,7 +16,6 @@ public class CarMapper implements ModelMapper<Car, CarResponseDto, CarRequestDto
     public CarMapper(OwnerService ownerService) {
         this.ownerService = ownerService;
     }
-
 
     @Override
     public Car toModel(CarRequestDto request) {
@@ -40,7 +38,9 @@ public class CarMapper implements ModelMapper<Car, CarResponseDto, CarRequestDto
         carResponseDto.setModel(car.getModel());
         carResponseDto.setLicensePlate(car.getLicensePlate());
         carResponseDto.setYearOfManufacturer(car.getYearOfManufacturer());
-        carResponseDto.setOwnerId(Optional.ofNullable(car.getOwner()).map(Owner::getId).orElse(null));
+        carResponseDto.setOwnerId(
+                Optional.ofNullable(car.getOwner())
+                        .map(Owner::getId).orElse(null));
         return carResponseDto;
     }
 }

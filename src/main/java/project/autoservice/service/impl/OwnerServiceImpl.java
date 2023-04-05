@@ -3,6 +3,7 @@ package project.autoservice.service.impl;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
+import project.autoservice.model.Car;
 import project.autoservice.model.Order;
 import project.autoservice.model.Owner;
 import project.autoservice.repository.CarRepository;
@@ -21,7 +22,11 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public Owner save(Owner owner) {
-        return ownerRepository.save(owner);
+        Owner owner1 = ownerRepository.save(owner);
+        List<Car> cars = owner.getCars();
+        cars.forEach(car -> car.setOwner(owner));
+        carRepository.saveAll(cars);
+        return owner1;
     }
 
     @Override

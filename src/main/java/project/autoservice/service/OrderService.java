@@ -1,9 +1,8 @@
 package project.autoservice.service;
 
+import java.math.BigDecimal;
 import project.autoservice.model.Order;
 import project.autoservice.model.OrderStatus;
-
-import java.math.BigDecimal;
 
 public interface OrderService {
     Order save(Order order);

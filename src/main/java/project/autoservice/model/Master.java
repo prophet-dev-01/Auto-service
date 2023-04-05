@@ -1,15 +1,14 @@
 package project.autoservice.model;
 
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -22,6 +21,6 @@ public class Master {
     private String firstName;
     private String lastName;
     private String middleName;
-    @OneToMany
-    private List<Order> completedOrder;
+    @OneToMany(mappedBy = "master")
+    private List<ServiceOperation> serviceOperations;
 }

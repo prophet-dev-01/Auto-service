@@ -1,13 +1,11 @@
 package project.autoservice.model.dto.response;
 
-import lombok.Getter;
-import lombok.Setter;
-import project.autoservice.model.Car;
-import project.autoservice.model.OrderStatus;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import project.autoservice.model.OrderStatus;
 
 @Getter
 @Setter
