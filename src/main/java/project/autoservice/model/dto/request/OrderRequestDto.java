@@ -1,8 +1,8 @@
 package project.autoservice.model.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import project.autoservice.model.OrderStatus;

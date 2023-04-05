@@ -15,13 +15,17 @@ import project.autoservice.service.ServiceOperationService;
 import project.autoservice.service.mapper.ModelMapper;
 
 @RestController
-@RequestMapping("services")
+@RequestMapping("/services")
 public class ServiceOperationController {
     private final ServiceOperationService operationService;
-    private final ModelMapper<ServiceOperation, ServiceOperationResponse, ServiceOperationRequest> operationMapper;
+    private final ModelMapper<ServiceOperation,
+            ServiceOperationResponse,
+            ServiceOperationRequest> operationMapper;
 
     public ServiceOperationController(ServiceOperationService operationService,
-                                      ModelMapper<ServiceOperation, ServiceOperationResponse, ServiceOperationRequest> operationMapper) {
+                                      ModelMapper<ServiceOperation,
+                                              ServiceOperationResponse,
+                                              ServiceOperationRequest> operationMapper) {
         this.operationService = operationService;
         this.operationMapper = operationMapper;
     }

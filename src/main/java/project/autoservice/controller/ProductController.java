@@ -18,7 +18,9 @@ public class ProductController {
     private final ModelMapper<Product, ProductResponseDto, ProductRequestDto> productMapper;
 
     public ProductController(ProductService productService,
-                             ModelMapper<Product, ProductResponseDto, ProductRequestDto> productMapper) {
+                             ModelMapper<Product,
+                                     ProductResponseDto,
+                                     ProductRequestDto> productMapper) {
         this.productService = productService;
         this.productMapper = productMapper;
     }

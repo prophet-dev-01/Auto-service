@@ -1,5 +1,6 @@
 package project.autoservice.service.mapper.impl;
 
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import project.autoservice.model.Car;
 import project.autoservice.model.Order;
@@ -9,8 +10,6 @@ import project.autoservice.model.dto.response.OwnerResponseDto;
 import project.autoservice.service.CarService;
 import project.autoservice.service.OrderService;
 import project.autoservice.service.mapper.ModelMapper;
-
-import java.util.stream.Collectors;
 
 @Component
 public class OwnerMapper implements ModelMapper<Owner, OwnerResponseDto, OwnerRequestDto> {

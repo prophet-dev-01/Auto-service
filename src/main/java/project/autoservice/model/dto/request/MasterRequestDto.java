@@ -10,5 +10,5 @@ public class MasterRequestDto {
     private String firstName;
     private String lastName;
     private String middleName;
-    private List<Long> completedOrderId;
+    private List<Long> operationsId;
 }

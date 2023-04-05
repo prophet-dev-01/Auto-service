@@ -11,25 +11,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.autoservice.model.Master;
-import project.autoservice.model.Order;
+import project.autoservice.model.ServiceOperation;
 import project.autoservice.model.dto.request.MasterRequestDto;
-import project.autoservice.model.dto.request.OrderRequestDto;
+import project.autoservice.model.dto.request.ServiceOperationRequest;
 import project.autoservice.model.dto.response.MasterResponseDto;
-import project.autoservice.model.dto.response.OrderResponseDto;
+import project.autoservice.model.dto.response.ServiceOperationResponse;
 import project.autoservice.service.MasterService;
 import project.autoservice.service.mapper.ModelMapper;
 
 @RestController
 @RequestMapping("/masters")
 public class MasterController {
-    private final ModelMapper<Order, OrderResponseDto, OrderRequestDto> orderMapper;
-    private final ModelMapper<Master, MasterResponseDto, MasterRequestDto> masterMapper;
+    private final ModelMapper<ServiceOperation,
+            ServiceOperationResponse,
+            ServiceOperationRequest> serviceMapper;
+    private final ModelMapper<Master,
+            MasterResponseDto,
+            MasterRequestDto> masterMapper;
     private final MasterService masterService;
 
-    public MasterController(ModelMapper<Order, OrderResponseDto, OrderRequestDto> orderMapper,
-                            ModelMapper<Master, MasterResponseDto, MasterRequestDto> masterMapper,
+    public MasterController(ModelMapper<ServiceOperation,
+            ServiceOperationResponse,
+            ServiceOperationRequest> serviceMapper,
+                            ModelMapper<Master,
+                                    MasterResponseDto,
+                                    MasterRequestDto> masterMapper,
                             MasterService masterService) {
-        this.orderMapper = orderMapper;
+        this.serviceMapper = serviceMapper;
         this.masterMapper = masterMapper;
         this.masterService = masterService;
     }
@@ -48,10 +56,10 @@ public class MasterController {
     }
 
     @GetMapping("/{id}/orders")
-    public List<OrderResponseDto> getMasterOrders(@PathVariable Long id) {
-        return masterService.findOrdersByMasterId(id)
+    public List<ServiceOperationResponse> findAllServiceById(@PathVariable Long id) {
+        return masterService.findAllServiceById(id)
                 .stream()
-                .map(orderMapper::toDto)
+                .map(serviceMapper::toDto)
                 .collect(Collectors.toList());
     }
 

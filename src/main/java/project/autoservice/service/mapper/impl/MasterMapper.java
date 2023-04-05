@@ -1,22 +1,21 @@
 package project.autoservice.service.mapper.impl;
 
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 import project.autoservice.model.Master;
-import project.autoservice.model.Order;
+import project.autoservice.model.ServiceOperation;
 import project.autoservice.model.dto.request.MasterRequestDto;
 import project.autoservice.model.dto.response.MasterResponseDto;
-import project.autoservice.service.impl.OrderServiceImpl;
+import project.autoservice.service.ServiceOperationService;
 import project.autoservice.service.mapper.ModelMapper;
 
 @Component
 public class MasterMapper
         implements ModelMapper<Master, MasterResponseDto, MasterRequestDto> {
-    private final OrderServiceImpl orderService;
+    private final ServiceOperationService operationService;
 
-    public MasterMapper(OrderServiceImpl orderService) {
-        this.orderService = orderService;
+    public MasterMapper(ServiceOperationService operationService) {
+        this.operationService = operationService;
     }
 
     @Override
@@ -25,9 +24,9 @@ public class MasterMapper
         master.setFirstName(request.getFirstName());
         master.setLastName(request.getLastName());
         master.setMiddleName(request.getMiddleName());
-        master.setCompletedOrder(request.getCompletedOrderId()
-                .stream().
-                map(orderService::findById)
+        master.setServiceOperations(request.getOperationsId()
+                .stream()
+                .map(operationService::findById)
                 .collect(Collectors.toList()));
         return master;
     }
@@ -39,9 +38,9 @@ public class MasterMapper
         masterResponseDto.setFirstName(model.getFirstName());
         masterResponseDto.setLastName(model.getLastName());
         masterResponseDto.setMiddleName(model.getMiddleName());
-        masterResponseDto.setCompletedOrderId(model.getCompletedOrder()
+        masterResponseDto.setServiceOperationsId(model.getServiceOperations()
                 .stream()
-                .map(Order::getId)
+                .map(ServiceOperation::getId)
                 .toList());
         return masterResponseDto;
     }

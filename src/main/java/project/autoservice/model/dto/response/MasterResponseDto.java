@@ -11,5 +11,5 @@ public class MasterResponseDto {
     private String firstName;
     private String lastName;
     private String middleName;
-    private List<Long> completedOrderId;
+    private List<Long> serviceOperationsId;
 }

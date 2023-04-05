@@ -3,8 +3,6 @@ package project.autoservice.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -27,7 +27,7 @@ public class Order {
     private Car car;
     private String problemDescription;
     private LocalDate acceptanceDate;
-    @OneToMany
+    @OneToMany(mappedBy = "order")
     private List<ServiceOperation> serviceOperations;
     @OneToMany
     private List<Product> products;
