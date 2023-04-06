@@ -17,6 +17,7 @@ import project.autoservice.model.dto.request.ServiceOperationRequest;
 import project.autoservice.model.dto.response.MasterResponseDto;
 import project.autoservice.model.dto.response.ServiceOperationResponse;
 import project.autoservice.service.MasterService;
+import project.autoservice.service.ServiceOperationService;
 import project.autoservice.service.mapper.ModelMapper;
 
 @RestController
@@ -29,6 +30,7 @@ public class MasterController {
             MasterResponseDto,
             MasterRequestDto> masterMapper;
     private final MasterService masterService;
+    private final ServiceOperationService operationService;
 
     public MasterController(ModelMapper<ServiceOperation,
             ServiceOperationResponse,
@@ -36,10 +38,12 @@ public class MasterController {
                             ModelMapper<Master,
                                     MasterResponseDto,
                                     MasterRequestDto> masterMapper,
-                            MasterService masterService) {
+                            MasterService masterService,
+                            ServiceOperationService operationService) {
         this.serviceMapper = serviceMapper;
         this.masterMapper = masterMapper;
         this.masterService = masterService;
+        this.operationService = operationService;
     }
 
     @PostMapping
@@ -56,10 +60,9 @@ public class MasterController {
     }
 
     @GetMapping("/{id}/orders")
-    public List<ServiceOperationResponse> findAllServiceById(@PathVariable Long id) {
-        return masterService.findAllServiceById(id)
-                .stream()
-                .map(serviceMapper::toDto)
+    public List<ServiceOperationResponse> findOperationsById(@PathVariable Long id) {
+        return operationService.findAllByMasterId(id)
+                .stream().map(serviceMapper::toDto)
                 .collect(Collectors.toList());
     }
 

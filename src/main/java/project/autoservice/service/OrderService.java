@@ -7,6 +7,8 @@ import project.autoservice.model.OrderStatus;
 public interface OrderService {
     Order save(Order order);
 
+    Order update(Order order);
+
     Order findById(Long id);
 
     void addProduct(Long id, Long productId);

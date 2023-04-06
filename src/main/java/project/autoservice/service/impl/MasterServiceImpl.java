@@ -35,19 +35,11 @@ public class MasterServiceImpl implements MasterService {
                 () -> new NoSuchElementException("Can't find Master by id: " + id));
     }
 
-    @Override
-    public List<ServiceOperation> findAllServiceById(Long id) {
-        return masterRepository
-                .findAllServiceById(id).orElseThrow(
-                        () -> new NoSuchElementException(
-                                "Can't find service operation"
-                                        + " by master with id: " + id));
-    }
-
     @Transactional
     @Override
     public BigDecimal issuanceOfSalary(Long id) {
-        List<ServiceOperation> serviceOperations = findAllServiceById(id)
+        List<ServiceOperation> serviceOperations
+                = operationService.findAllByMasterId(id)
                 .stream()
                 .filter(serviceOperation -> serviceOperation
                         .getStatus().equals(PaymentStatus.UNPAID))
