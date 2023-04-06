@@ -40,6 +40,7 @@ public class OrderMapper implements ModelMapper<Order, OrderResponseDto, OrderRe
                 .map(operationService::findById)
                 .collect(Collectors.toList()));
         order.setTotalAmountDue(request.getTotalAmountDue());
+        order.setAcceptanceDate(request.getAcceptanceDate());
         return order;
     }
 

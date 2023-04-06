@@ -24,7 +24,7 @@ public class CarController {
         this.carMapper = carMapper;
     }
 
-    @PostMapping()
+    @PostMapping
     public CarResponseDto create(@RequestBody CarRequestDto carRequestDto) {
         Car car = carService.save(carMapper.toModel(carRequestDto));
         return carMapper.toDto(car);

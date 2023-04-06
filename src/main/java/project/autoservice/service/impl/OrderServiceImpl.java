@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
-import project.autoservice.exception.DataProcessingException;
 import project.autoservice.model.Order;
 import project.autoservice.model.OrderStatus;
 import project.autoservice.model.Owner;
@@ -53,9 +52,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order update(Order order) {
+        Order save = orderRepository.save(order);
+        List<ServiceOperation> serviceOperations = order.getServiceOperations();
+        serviceOperations.forEach(serviceOperation -> serviceOperation.setOrder(order));
+        operationRepository.saveAll(serviceOperations);
+        return save;
+    }
+
+    @Override
     public Order findById(Long id) {
         return orderRepository.findById(id).orElseThrow(
-                () -> new DataProcessingException("Can't find order by id: " + id));
+                () -> new NoSuchElementException("Can't find order by id: " + id));
     }
 
     @Override

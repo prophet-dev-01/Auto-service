@@ -43,10 +43,10 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable Long id, @RequestBody OrderRequestDto requestDto) {
+    public OrderResponseDto update(@PathVariable Long id, @RequestBody OrderRequestDto requestDto) {
         Order order = orderMapper.toModel(requestDto);
         order.setId(id);
-        orderService.save(order);
+        return orderMapper.toDto(orderService.update(order));
     }
 
     @PutMapping("/{id}/status")
@@ -59,5 +59,4 @@ public class OrderController {
     public BigDecimal getOrderCost(@PathVariable Long id) {
         return orderService.getTotalPrice(id);
     }
-
 }
