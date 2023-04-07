@@ -8,5 +8,5 @@ public interface MasterService {
 
     Master findById(Long id);
 
-    BigDecimal issuanceOfSalary(Long id);
+    BigDecimal getSalary(Long id);
 }

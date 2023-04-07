@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class OwnerResponseDto {
     private Long id;
-    private List<Long> carsId;
-    private List<Long> ordersId;
+    private List<Long> carIds;
+    private List<Long> orderIds;
 }

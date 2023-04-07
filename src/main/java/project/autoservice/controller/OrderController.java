@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Order;
-import project.autoservice.model.OrderStatus;
 import project.autoservice.model.dto.request.OrderRequestDto;
 import project.autoservice.model.dto.response.OrderResponseDto;
 import project.autoservice.service.OrderService;
-import project.autoservice.service.mapper.ModelMapper;
 
 @RestController
 @RequestMapping("/orders")
@@ -37,7 +36,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}/products")
-    public void addProducts(@PathVariable Long id,
+    public void addProduct(@PathVariable Long id,
                             @RequestParam Long productId) {
         orderService.addProduct(id, productId);
     }
@@ -50,13 +49,13 @@ public class OrderController {
     }
 
     @PutMapping("/{id}/status")
-    public void updateOrderStatus(@PathVariable Long id,
-                                  @RequestParam OrderStatus status) {
+    public void updateStatus(@PathVariable Long id,
+                                  @RequestParam Order.OrderStatus status) {
         orderService.updateStatus(id, status);
     }
 
     @GetMapping("/{id}/price")
-    public BigDecimal getOrderCost(@PathVariable Long id) {
+    public BigDecimal getTotalPrice(@PathVariable Long id) {
         return orderService.getTotalPrice(id);
     }
 }

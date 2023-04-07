@@ -17,11 +17,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "service_operations")
-public class ServiceOperation {
+@Table(name = "services")
+public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(value = EnumType.STRING)
     private TypeOperation typeOperation;
     @JoinColumn(name = "order_id")
     @ManyToOne
@@ -32,4 +33,18 @@ public class ServiceOperation {
     private BigDecimal price;
     @Enumerated(value = EnumType.STRING)
     private PaymentStatus status;
+
+    public enum TypeOperation {
+        OIL_CHANGE,
+        TIRE_ROTATION,
+        BRAKE_REPLACEMENT,
+        ENGINE_TUNE_UP,
+        DIAGNOSTIC,
+        TRANSMISSION_SERVICE
+    }
+
+    public enum PaymentStatus {
+        PAID,
+        UNPAID
+    }
 }

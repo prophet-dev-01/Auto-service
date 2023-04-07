@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Product;
 import project.autoservice.model.dto.request.ProductRequestDto;
 import project.autoservice.model.dto.response.ProductResponseDto;
 import project.autoservice.service.ProductService;
-import project.autoservice.service.mapper.ModelMapper;
 
 @RestController
 @RequestMapping("/products")

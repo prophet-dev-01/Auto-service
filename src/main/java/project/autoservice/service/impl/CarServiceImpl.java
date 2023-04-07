@@ -1,5 +1,6 @@
 package project.autoservice.service.impl;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import project.autoservice.model.Car;
@@ -17,6 +18,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car save(Car car) {
         return carRepository.save(car);
+    }
+
+    @Override
+    public List<Car> findAllByIds(List<Long> ids) {
+        return carRepository.findAllByIdIn(ids);
     }
 
     @Override

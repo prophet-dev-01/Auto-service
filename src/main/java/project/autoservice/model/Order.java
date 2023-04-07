@@ -1,6 +1,5 @@
 package project.autoservice.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Entity;
@@ -28,11 +27,17 @@ public class Order {
     private String problemDescription;
     private LocalDate acceptanceDate;
     @OneToMany(mappedBy = "order")
-    private List<ServiceOperation> serviceOperations;
+    private List<Service> services;
     @OneToMany
     private List<Product> products;
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
-    private BigDecimal totalAmountDue;
     private LocalDate completionDate;
+
+    public enum OrderStatus {
+        ACCEPTED,
+        IN_PROGRESS,
+        SUCCESSFUL,
+        NOT_COMPLETED_SUCCESSFUL
+    }
 }

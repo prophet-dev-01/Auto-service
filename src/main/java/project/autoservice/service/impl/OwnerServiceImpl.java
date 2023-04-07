@@ -22,11 +22,10 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public Owner save(Owner owner) {
-        Owner owner1 = ownerRepository.save(owner);
         List<Car> cars = owner.getCars();
         cars.forEach(car -> car.setOwner(owner));
         carRepository.saveAll(cars);
-        return owner1;
+        return ownerRepository.save(owner);
     }
 
     @Override
@@ -36,7 +35,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public List<Order> findOrdersById(Long id) {
+    public List<Order> findOrdersByOwnerId(Long id) {
         return ownerRepository.findOrdersByOwnerId(id);
     }
 }

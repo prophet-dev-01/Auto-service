@@ -1,31 +1,31 @@
-package project.autoservice.service.mapper.impl;
+package project.autoservice.mapper.impl;
 
 import java.util.Optional;
 import org.springframework.stereotype.Component;
+import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Master;
 import project.autoservice.model.Order;
-import project.autoservice.model.ServiceOperation;
-import project.autoservice.model.dto.request.ServiceOperationRequest;
-import project.autoservice.model.dto.response.ServiceOperationResponse;
+import project.autoservice.model.Service;
+import project.autoservice.model.dto.request.ServiceRequest;
+import project.autoservice.model.dto.response.ServiceResponse;
 import project.autoservice.service.MasterService;
 import project.autoservice.service.OrderService;
-import project.autoservice.service.mapper.ModelMapper;
 
 @Component
-public class ServiceOperationMapper implements ModelMapper<ServiceOperation,
-        ServiceOperationResponse,
-        ServiceOperationRequest> {
+public class ServiceMapper implements ModelMapper<Service,
+        ServiceResponse,
+        ServiceRequest> {
     private final OrderService orderService;
     private final MasterService masterService;
 
-    public ServiceOperationMapper(OrderService orderService, MasterService masterService) {
+    public ServiceMapper(OrderService orderService, MasterService masterService) {
         this.orderService = orderService;
         this.masterService = masterService;
     }
 
     @Override
-    public ServiceOperation toModel(ServiceOperationRequest request) {
-        ServiceOperation serviceOperation = new ServiceOperation();
+    public Service toModel(ServiceRequest request) {
+        Service serviceOperation = new Service();
         serviceOperation.setStatus(request.getStatus());
         serviceOperation.setPrice(request.getPrice());
         serviceOperation.setOrder(request.getOrderId() == null
@@ -39,9 +39,9 @@ public class ServiceOperationMapper implements ModelMapper<ServiceOperation,
     }
 
     @Override
-    public ServiceOperationResponse toDto(ServiceOperation model) {
-        ServiceOperationResponse operationResponse =
-                new ServiceOperationResponse();
+    public ServiceResponse toDto(Service model) {
+        ServiceResponse operationResponse =
+                new ServiceResponse();
         operationResponse.setId(model.getId());
         operationResponse.setPrice(model.getPrice());
         operationResponse.setStatus(model.getStatus());

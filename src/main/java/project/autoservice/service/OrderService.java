@@ -1,8 +1,8 @@
 package project.autoservice.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import project.autoservice.model.Order;
-import project.autoservice.model.OrderStatus;
 
 public interface OrderService {
     Order save(Order order);
@@ -11,9 +11,11 @@ public interface OrderService {
 
     Order findById(Long id);
 
+    List<Order> findAllByIds(List<Long> ids);
+
     void addProduct(Long id, Long productId);
 
-    void updateStatus(Long id, OrderStatus orderStatus);
+    void updateStatus(Long id, Order.OrderStatus orderStatus);
 
     BigDecimal getTotalPrice(Long id);
 }
