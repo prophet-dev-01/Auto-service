@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Car;
 import project.autoservice.model.dto.request.CarRequestDto;
 import project.autoservice.model.dto.response.CarResponseDto;
 import project.autoservice.service.CarService;
-import project.autoservice.service.mapper.ModelMapper;
 
 @RestController
 @RequestMapping("/cars")

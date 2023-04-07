@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Car;
 import project.autoservice.model.Order;
 import project.autoservice.model.Owner;
@@ -19,7 +20,6 @@ import project.autoservice.model.dto.response.CarResponseDto;
 import project.autoservice.model.dto.response.OrderResponseDto;
 import project.autoservice.model.dto.response.OwnerResponseDto;
 import project.autoservice.service.OwnerService;
-import project.autoservice.service.mapper.ModelMapper;
 
 @RestController
 @RequestMapping("/owners")
@@ -54,7 +54,7 @@ public class OwnerController {
 
     @GetMapping("/{id}/orders")
     public List<OrderResponseDto> getAllOrders(@PathVariable Long id) {
-        return ownerService.findOrdersById(id).stream()
+        return ownerService.findOrdersByOwnerId(id).stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
     }

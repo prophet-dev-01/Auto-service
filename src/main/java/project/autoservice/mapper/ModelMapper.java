@@ -1,4 +1,4 @@
-package project.autoservice.service.mapper;
+package project.autoservice.mapper;
 
 public interface ModelMapper<M, P, R> {
     M toModel(R request);

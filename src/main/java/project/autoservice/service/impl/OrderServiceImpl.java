@@ -5,34 +5,35 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
-import org.springframework.stereotype.Service;
 import project.autoservice.model.Order;
-import project.autoservice.model.OrderStatus;
 import project.autoservice.model.Owner;
 import project.autoservice.model.Product;
-import project.autoservice.model.ServiceOperation;
-import project.autoservice.model.TypeOperation;
+import project.autoservice.model.Service;
 import project.autoservice.repository.OrderRepository;
 import project.autoservice.repository.OwnerRepository;
 import project.autoservice.repository.ProductRepository;
-import project.autoservice.repository.ServiceOperationRepository;
+import project.autoservice.repository.ServiceRepository;
 import project.autoservice.service.OrderService;
 
-@Service
+@org.springframework.stereotype.Service
 public class OrderServiceImpl implements OrderService {
+    private static final BigDecimal MAX_PERCENT = BigDecimal.valueOf(100);
+    private static final int DECIMAL_SCALE = 2;
+    private static final int PERSON_SERVICE_DISCOUNT = 2;
+    private static final int PERSON_PRODUCT_DISCOUNT = 1;
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final OwnerRepository ownerRepository;
-    private final ServiceOperationRepository operationRepository;
+    private final ServiceRepository serviceRepository;
 
     public OrderServiceImpl(OrderRepository orderRepository,
                             ProductRepository productRepository,
                             OwnerRepository ownerRepository,
-                            ServiceOperationRepository operationRepository) {
+                            ServiceRepository serviceRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.ownerRepository = ownerRepository;
-        this.operationRepository = operationRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     @Override
@@ -45,18 +46,18 @@ public class OrderServiceImpl implements OrderService {
             owner.setOrders(orders);
             ownerRepository.save(owner);
         }
-        List<ServiceOperation> serviceOperations = order.getServiceOperations();
-        serviceOperations.forEach(serviceOperation -> serviceOperation.setOrder(order));
-        operationRepository.saveAll(serviceOperations);
+        List<Service> services = order.getServices();
+        services.forEach(service -> service.setOrder(order));
+        serviceRepository.saveAll(services);
         return save;
     }
 
     @Override
     public Order update(Order order) {
         Order save = orderRepository.save(order);
-        List<ServiceOperation> serviceOperations = order.getServiceOperations();
-        serviceOperations.forEach(serviceOperation -> serviceOperation.setOrder(order));
-        operationRepository.saveAll(serviceOperations);
+        List<Service> services = order.getServices();
+        services.forEach(service -> service.setOrder(order));
+        serviceRepository.saveAll(services);
         return save;
     }
 
@@ -64,6 +65,11 @@ public class OrderServiceImpl implements OrderService {
     public Order findById(Long id) {
         return orderRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("Can't find order by id: " + id));
+    }
+
+    @Override
+    public List<Order> findAllByIds(List<Long> ids) {
+        return orderRepository.findAllByIdIn(ids);
     }
 
     @Override
@@ -78,11 +84,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateStatus(Long id, OrderStatus orderStatus) {
+    public void updateStatus(Long id, Order.OrderStatus orderStatus) {
         Order order = orderRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("Can't find order by id: " + id));
-        if (orderStatus.equals(OrderStatus.SUCCESSFUL)
-                || orderStatus.equals(OrderStatus.NOT_COMPLETED_SUCCESSFUL)) {
+        if (orderStatus.equals(Order.OrderStatus.SUCCESSFUL)
+                || orderStatus.equals(Order.OrderStatus.NOT_COMPLETED_SUCCESSFUL)) {
             order.setCompletionDate(LocalDate.now());
         }
         order.setOrderStatus(orderStatus);
@@ -94,41 +100,48 @@ public class OrderServiceImpl implements OrderService {
         Order orderById = orderRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("Can't find order by id: " + id));
         int countOrderInOwner = orderById.getCar().getOwner().getOrders().size();
-        List<ServiceOperation> serviceOperations = orderById.getServiceOperations();
-        if (serviceOperations.size() == 1
-                && serviceOperations.get(0)
+        List<Service> services = orderById.getServices();
+        Service firstService = services.stream()
+                .findFirst().orElseThrow(
+                        () -> new NoSuchElementException("Could not find service in order by id: "
+                                + orderById.getId()));
+        if (services.size() == 1 && firstService
                 .getTypeOperation()
-                .equals(TypeOperation.DIAGNOSTIC)) {
-            orderById.setTotalAmountDue(serviceOperations.get(0).getPrice());
-            return serviceOperations.get(0).getPrice()
+                .equals(Service.TypeOperation.DIAGNOSTIC)) {
+            return firstService.getPrice()
                     .add(orderById.getProducts()
                             .stream()
                             .map(Product::getPrice)
                             .reduce(BigDecimal.ZERO, BigDecimal::add));
         }
-        BigDecimal priceToProducts = orderById.getProducts()
-                .stream()
-                .map(Product::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalPriceWithDiscount
-                = calculateDiscountedPrice(priceToProducts, countOrderInOwner)
-                .add(calculateDiscountedPrice(serviceOperations
-                        .stream()
-                        .filter(serviceOperation -> !serviceOperation.getTypeOperation()
-                                .equals(TypeOperation.DIAGNOSTIC))
-                        .map(ServiceOperation::getPrice)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add), countOrderInOwner * 2));
-        orderById.setTotalAmountDue(totalPriceWithDiscount);
-        orderRepository.save(orderById);
-        return totalPriceWithDiscount;
+        return calculateDiscountedPrice(getPriceOfAllProductsByOrder(orderById),
+                countOrderInOwner * PERSON_PRODUCT_DISCOUNT)
+                .add(calculateDiscountedPrice(
+                        getPriceForServicesWithFreeDiagnostics(services),
+                        countOrderInOwner * PERSON_SERVICE_DISCOUNT));
     }
 
     private BigDecimal calculateDiscountedPrice(BigDecimal price, int discount) {
         BigDecimal discountPercent = BigDecimal.valueOf(discount);
         BigDecimal discountMultiplier =
                 discountPercent
-                        .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                        .divide(MAX_PERCENT, DECIMAL_SCALE, RoundingMode.HALF_UP);
         BigDecimal discountedPrice = price.multiply(BigDecimal.ONE.subtract(discountMultiplier));
-        return discountedPrice.setScale(2, RoundingMode.HALF_UP);
+        return discountedPrice.setScale(DECIMAL_SCALE, RoundingMode.HALF_UP);
+    }
+
+    private BigDecimal getPriceOfAllProductsByOrder(Order order) {
+        return order.getProducts()
+                .stream()
+                .map(Product::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private BigDecimal getPriceForServicesWithFreeDiagnostics(List<Service> services) {
+        return services.stream()
+                .filter(service -> !service.getTypeOperation()
+                        .equals(Service.TypeOperation.DIAGNOSTIC))
+                .map(Service::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

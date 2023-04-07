@@ -1,10 +1,10 @@
-package project.autoservice.service.mapper.impl;
+package project.autoservice.mapper.impl;
 
 import org.springframework.stereotype.Component;
+import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Product;
 import project.autoservice.model.dto.request.ProductRequestDto;
 import project.autoservice.model.dto.response.ProductResponseDto;
-import project.autoservice.service.mapper.ModelMapper;
 
 @Component
 public class ProductMapper implements ModelMapper<Product, ProductResponseDto, ProductRequestDto> {

@@ -22,5 +22,5 @@ public class Master {
     private String lastName;
     private String middleName;
     @OneToMany(mappedBy = "master")
-    private List<ServiceOperation> serviceOperations;
+    private List<Service> services;
 }

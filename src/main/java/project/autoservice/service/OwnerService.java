@@ -9,5 +9,5 @@ public interface OwnerService {
 
     Owner findById(Long id);
 
-    List<Order> findOrdersById(Long id);
+    List<Order> findOrdersByOwnerId(Long id);
 }

@@ -1,28 +1,29 @@
-package project.autoservice.service.mapper.impl;
+package project.autoservice.mapper.impl;
 
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
+import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Order;
 import project.autoservice.model.Product;
-import project.autoservice.model.ServiceOperation;
+import project.autoservice.model.Service;
 import project.autoservice.model.dto.request.OrderRequestDto;
 import project.autoservice.model.dto.response.OrderResponseDto;
 import project.autoservice.service.CarService;
 import project.autoservice.service.ProductService;
-import project.autoservice.service.ServiceOperationService;
-import project.autoservice.service.mapper.ModelMapper;
+import project.autoservice.service.ServiceService;
 
 @Component
 public class OrderMapper implements ModelMapper<Order, OrderResponseDto, OrderRequestDto> {
     private final CarService carService;
     private final ProductService productService;
-    private final ServiceOperationService operationService;
+    private final ServiceService serviceService;
 
-    public OrderMapper(CarService carService, ProductService productService,
-                       ServiceOperationService operationService) {
+    public OrderMapper(CarService carService,
+                       ProductService productService,
+                       ServiceService serviceService) {
         this.carService = carService;
         this.productService = productService;
-        this.operationService = operationService;
+        this.serviceService = serviceService;
     }
 
     @Override
@@ -30,17 +31,9 @@ public class OrderMapper implements ModelMapper<Order, OrderResponseDto, OrderRe
         Order order = new Order();
         order.setCar(carService.findById(request.getCarId()));
         order.setOrderStatus(request.getOrderStatus());
-        order.setProducts(request.getProductsId()
-                .stream()
-                .map(productService::findById)
-                .collect(Collectors.toList()));
+        order.setProducts(productService.findAllByIds(request.getProductIds()));
         order.setProblemDescription(request.getProblemDescription());
-        order.setServiceOperations(request.getServiceOperationsId()
-                .stream()
-                .map(operationService::findById)
-                .collect(Collectors.toList()));
-        order.setTotalAmountDue(request.getTotalAmountDue());
-        order.setAcceptanceDate(request.getAcceptanceDate());
+        order.setServices(serviceService.findAllByIds(request.getServiceIds()));
         return order;
     }
 
@@ -53,12 +46,11 @@ public class OrderMapper implements ModelMapper<Order, OrderResponseDto, OrderRe
         responseDto.setProblemDescription(model.getProblemDescription());
         responseDto.setAcceptanceDate(model.getAcceptanceDate());
         responseDto.setCompletionDate(model.getCompletionDate());
-        responseDto.setServiceOperationsId(model.getServiceOperations()
+        responseDto.setServiceIds(model.getServices()
                 .stream()
-                .map(ServiceOperation::getId)
+                .map(Service::getId)
                 .collect(Collectors.toList()));
-        responseDto.setTotalAmountDue(model.getTotalAmountDue());
-        responseDto.setProductsId(model.getProducts()
+        responseDto.setProductIds(model.getProducts()
                 .stream()
                 .map(Product::getId)
                 .collect(Collectors.toList()));
