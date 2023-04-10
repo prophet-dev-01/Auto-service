@@ -1,5 +1,6 @@
 package project.autoservice.controller;
 
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,11 +45,9 @@ public class ServiceController {
         return operationMapper.toDto(serviceService.save(service));
     }
 
-    @PutMapping("/{id}/status")
-    public ServiceResponse updateStatus(@PathVariable Long id,
+    @PatchMapping("/{id}")
+    public void updateStatus(@PathVariable Long id,
                                         @RequestParam Service.PaymentStatus status) {
-        Service serviceById = serviceService.findById(id);
-        serviceById.setStatus(status);
-        return operationMapper.toDto(serviceService.save(serviceById));
+        serviceService.updateStatus(id, status);
     }
 }

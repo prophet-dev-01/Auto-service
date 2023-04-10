@@ -37,9 +37,6 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public void updateStatus(Long id, Service.PaymentStatus status) {
-        Service serviceOperation = serviceRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("Can't find service with id: " + id));
-        serviceOperation.setStatus(status);
-        serviceRepository.save(serviceOperation);
+        serviceRepository.updateStatus(status, id);
     }
 }

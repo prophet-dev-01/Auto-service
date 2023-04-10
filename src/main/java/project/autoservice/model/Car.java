@@ -24,7 +24,7 @@ public class Car {
     private int yearOfManufacturer;
     @Column(unique = true)
     private String licensePlate;
-    @JoinColumn(name = "owner_id")
     @ManyToOne
+    @JoinColumn(name = "owner_id")
     private Owner owner;
 }
