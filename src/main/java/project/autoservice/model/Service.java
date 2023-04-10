@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +27,7 @@ public class Service {
     @ManyToOne
     private Order order;
     @JoinColumn(name = "master_id")
-    @OneToOne
+    @ManyToOne
     private Master master;
     private BigDecimal price;
     @Enumerated(value = EnumType.STRING)
