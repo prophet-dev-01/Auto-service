@@ -2,18 +2,16 @@ package project.autoservice.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.autoservice.model.Car;
 import project.autoservice.repository.CarRepository;
 import project.autoservice.service.CarService;
 
+@RequiredArgsConstructor
 @Service
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
-
-    public CarServiceImpl(CarRepository carRepository) {
-        this.carRepository = carRepository;
-    }
 
     @Override
     public Car save(Car car) {

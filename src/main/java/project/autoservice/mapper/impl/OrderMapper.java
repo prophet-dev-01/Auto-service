@@ -1,6 +1,7 @@
 package project.autoservice.mapper.impl;
 
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Order;
@@ -12,19 +13,12 @@ import project.autoservice.service.CarService;
 import project.autoservice.service.ProductService;
 import project.autoservice.service.ServiceService;
 
+@RequiredArgsConstructor
 @Component
 public class OrderMapper implements ModelMapper<Order, OrderResponseDto, OrderRequestDto> {
     private final CarService carService;
     private final ProductService productService;
     private final ServiceService serviceService;
-
-    public OrderMapper(CarService carService,
-                       ProductService productService,
-                       ServiceService serviceService) {
-        this.carService = carService;
-        this.productService = productService;
-        this.serviceService = serviceService;
-    }
 
     @Override
     public Order toModel(OrderRequestDto request) {

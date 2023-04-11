@@ -3,6 +3,7 @@ package project.autoservice.controller;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import project.autoservice.model.dto.response.ServiceResponse;
 import project.autoservice.service.MasterService;
 import project.autoservice.service.ServiceService;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/masters")
 public class MasterController {
@@ -31,20 +33,6 @@ public class MasterController {
             MasterRequestDto> masterMapper;
     private final MasterService masterService;
     private final ServiceService operationService;
-
-    public MasterController(ModelMapper<Service,
-            ServiceResponse,
-            ServiceRequest> serviceMapper,
-                            ModelMapper<Master,
-                                    MasterResponseDto,
-                                    MasterRequestDto> masterMapper,
-                            MasterService masterService,
-                            ServiceService operationService) {
-        this.serviceMapper = serviceMapper;
-        this.masterMapper = masterMapper;
-        this.masterService = masterService;
-        this.operationService = operationService;
-    }
 
     @PostMapping
     public MasterResponseDto create(@RequestBody MasterRequestDto requestDto) {

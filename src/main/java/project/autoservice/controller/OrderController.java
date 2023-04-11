@@ -2,6 +2,7 @@ package project.autoservice.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,17 +17,12 @@ import project.autoservice.model.dto.request.OrderRequestDto;
 import project.autoservice.model.dto.response.OrderResponseDto;
 import project.autoservice.service.OrderService;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
     private final ModelMapper<Order, OrderResponseDto, OrderRequestDto> orderMapper;
     private final OrderService orderService;
-
-    public OrderController(ModelMapper<Order, OrderResponseDto, OrderRequestDto> orderMapper,
-                           OrderService orderService) {
-        this.orderMapper = orderMapper;
-        this.orderService = orderService;
-    }
 
     @PostMapping
     public OrderResponseDto create(@RequestBody OrderRequestDto requestDto) {

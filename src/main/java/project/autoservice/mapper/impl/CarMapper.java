@@ -1,6 +1,7 @@
 package project.autoservice.mapper.impl;
 
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Car;
@@ -9,13 +10,10 @@ import project.autoservice.model.dto.request.CarRequestDto;
 import project.autoservice.model.dto.response.CarResponseDto;
 import project.autoservice.service.OwnerService;
 
+@RequiredArgsConstructor
 @Component
 public class CarMapper implements ModelMapper<Car, CarResponseDto, CarRequestDto> {
     private final OwnerService ownerService;
-
-    public CarMapper(OwnerService ownerService) {
-        this.ownerService = ownerService;
-    }
 
     @Override
     public Car toModel(CarRequestDto request) {
