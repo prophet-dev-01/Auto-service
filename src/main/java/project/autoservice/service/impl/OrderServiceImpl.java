@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import lombok.RequiredArgsConstructor;
 import project.autoservice.model.Order;
 import project.autoservice.model.Owner;
 import project.autoservice.model.Product;
@@ -15,6 +16,7 @@ import project.autoservice.repository.ProductRepository;
 import project.autoservice.repository.ServiceRepository;
 import project.autoservice.service.OrderService;
 
+@RequiredArgsConstructor
 @org.springframework.stereotype.Service
 public class OrderServiceImpl implements OrderService {
     private static final BigDecimal MAX_PERCENT = BigDecimal.valueOf(100);
@@ -25,16 +27,6 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final OwnerRepository ownerRepository;
     private final ServiceRepository serviceRepository;
-
-    public OrderServiceImpl(OrderRepository orderRepository,
-                            ProductRepository productRepository,
-                            OwnerRepository ownerRepository,
-                            ServiceRepository serviceRepository) {
-        this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
-        this.ownerRepository = ownerRepository;
-        this.serviceRepository = serviceRepository;
-    }
 
     @Override
     public Order save(Order order) {

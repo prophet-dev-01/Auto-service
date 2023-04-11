@@ -5,12 +5,14 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.NoSuchElementException;
 import javax.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import project.autoservice.model.Master;
 import project.autoservice.model.Service;
 import project.autoservice.repository.MasterRepository;
 import project.autoservice.service.MasterService;
 import project.autoservice.service.ServiceService;
 
+@RequiredArgsConstructor
 @org.springframework.stereotype.Service
 public class MasterServiceImpl implements MasterService {
     private static final int DECIMAL_SCALE = 2;
@@ -18,12 +20,6 @@ public class MasterServiceImpl implements MasterService {
     private static final BigDecimal MASTER_SALARY_PERCENT = BigDecimal.valueOf(40);
     private final ServiceService operationService;
     private final MasterRepository masterRepository;
-
-    public MasterServiceImpl(ServiceService operationService,
-                             MasterRepository masterRepository) {
-        this.operationService = operationService;
-        this.masterRepository = masterRepository;
-    }
 
     @Override
     public Master save(Master master) {

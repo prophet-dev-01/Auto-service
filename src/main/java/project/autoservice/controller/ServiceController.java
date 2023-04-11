@@ -1,5 +1,6 @@
 package project.autoservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import project.autoservice.model.dto.request.ServiceRequest;
 import project.autoservice.model.dto.response.ServiceResponse;
 import project.autoservice.service.ServiceService;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/services")
 public class ServiceController {
@@ -21,14 +23,6 @@ public class ServiceController {
     private final ModelMapper<Service,
             ServiceResponse,
             ServiceRequest> operationMapper;
-
-    public ServiceController(ServiceService serviceService,
-                             ModelMapper<Service,
-                                              ServiceResponse,
-                                              ServiceRequest> serviceMapper) {
-        this.serviceService = serviceService;
-        this.operationMapper = serviceMapper;
-    }
 
     @PostMapping
     public ServiceResponse create(@RequestBody ServiceRequest serviceRequest) {

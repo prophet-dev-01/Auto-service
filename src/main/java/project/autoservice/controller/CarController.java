@@ -1,5 +1,6 @@
 package project.autoservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,17 +13,12 @@ import project.autoservice.model.dto.request.CarRequestDto;
 import project.autoservice.model.dto.response.CarResponseDto;
 import project.autoservice.service.CarService;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/cars")
 public class CarController {
     private final CarService carService;
     private final ModelMapper<Car, CarResponseDto, CarRequestDto> carMapper;
-
-    public CarController(CarService carService,
-                         ModelMapper<Car, CarResponseDto, CarRequestDto> carMapper) {
-        this.carService = carService;
-        this.carMapper = carMapper;
-    }
 
     @PostMapping
     public CarResponseDto create(@RequestBody CarRequestDto carRequestDto) {
@@ -31,9 +27,9 @@ public class CarController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable Long id, @RequestBody CarRequestDto carRequestDto) {
+    public CarResponseDto update(@PathVariable Long id, @RequestBody CarRequestDto carRequestDto) {
         Car car = carMapper.toModel(carRequestDto);
         car.setId(id);
-        carService.save(car);
+        return carMapper.toDto(carService.save(car));
     }
 }

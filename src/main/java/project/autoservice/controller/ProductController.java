@@ -1,5 +1,6 @@
 package project.autoservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,19 +12,12 @@ import project.autoservice.model.dto.request.ProductRequestDto;
 import project.autoservice.model.dto.response.ProductResponseDto;
 import project.autoservice.service.ProductService;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
     private final ModelMapper<Product, ProductResponseDto, ProductRequestDto> productMapper;
-
-    public ProductController(ProductService productService,
-                             ModelMapper<Product,
-                                     ProductResponseDto,
-                                     ProductRequestDto> productMapper) {
-        this.productService = productService;
-        this.productMapper = productMapper;
-    }
 
     @PostMapping
     public ProductResponseDto create(@RequestBody ProductRequestDto productRequestDto) {

@@ -1,5 +1,6 @@
 package project.autoservice.mapper.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import project.autoservice.mapper.ModelMapper;
 import project.autoservice.model.Master;
@@ -8,14 +9,11 @@ import project.autoservice.model.dto.request.MasterRequestDto;
 import project.autoservice.model.dto.response.MasterResponseDto;
 import project.autoservice.service.ServiceService;
 
+@RequiredArgsConstructor
 @Component
 public class MasterMapper
         implements ModelMapper<Master, MasterResponseDto, MasterRequestDto> {
     private final ServiceService serviceService;
-
-    public MasterMapper(ServiceService serviceService) {
-        this.serviceService = serviceService;
-    }
 
     @Override
     public Master toModel(MasterRequestDto request) {

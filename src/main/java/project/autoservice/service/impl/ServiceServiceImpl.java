@@ -2,17 +2,15 @@ package project.autoservice.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import lombok.RequiredArgsConstructor;
 import project.autoservice.model.Service;
 import project.autoservice.repository.ServiceRepository;
 import project.autoservice.service.ServiceService;
 
+@RequiredArgsConstructor
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService {
     private final ServiceRepository serviceRepository;
-
-    public ServiceServiceImpl(ServiceRepository serviceRepository) {
-        this.serviceRepository = serviceRepository;
-    }
 
     @Override
     public Service save(Service service) {
